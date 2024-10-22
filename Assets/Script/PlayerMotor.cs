@@ -27,8 +27,8 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) MoveLane(false);
-        if (Input.GetKeyDown(KeyCode.RightArrow)) MoveLane(true);
+        if (MobileInput.Instance.SwipeLeft) MoveLane(false);
+        if (MobileInput.Instance.SwipeRight) MoveLane(true);
 
         Vector3 targetPosition = new(0, 0, transform.position.z);
         if (desiredLane == 0) targetPosition += Vector3.left * LANE_DISTANCE;
@@ -44,7 +44,7 @@ public class PlayerMotor : MonoBehaviour
         {
             verticalVelocity = -0.1f;
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (MobileInput.Instance.SwipeUp)
             {
                 animator.SetTrigger("Jump");
                 verticalVelocity = jumpForce;
@@ -53,7 +53,7 @@ public class PlayerMotor : MonoBehaviour
         else
         {
             verticalVelocity -= gravity * Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (MobileInput.Instance.SwipeDown)
             {
                 verticalVelocity -= jumpForce;
             }
