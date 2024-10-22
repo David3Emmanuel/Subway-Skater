@@ -30,6 +30,7 @@ public class PlayerMotor : MonoBehaviour
     public void StartRunning()
     {
         isRunning = true;
+        animator.SetTrigger("Start Running");
     }
 
     void Update()
@@ -57,6 +58,10 @@ public class PlayerMotor : MonoBehaviour
             {
                 animator.SetTrigger("Jump");
                 verticalVelocity = jumpForce;
+            } else if (MobileInput.Instance.SwipeDown)
+            {
+                StartSliding();
+                Invoke("StopSliding", 1.0f);
             }
         }
         else
@@ -99,4 +104,35 @@ public class PlayerMotor : MonoBehaviour
         Debug.DrawRay(groundRay.origin, groundRay.direction, Color.cyan, 1.0f);
         return Physics.Raycast(groundRay, 0.2f + 0.1f);
     }
-}
+
+    void StartSliding()
+    {
+        animator.SetBool("Sliding", true);
+        controller.height /= 2;
+        controller.center = new Vector3(controller.center.x, controller.center.y / 2, controller.center.z);
+    }
+
+    void StopSliding()
+    {
+        animator.SetBool("Sliding", false);
+        controller.height *= 2;
+        controller.center = new Vector3(controller.center.x, controller.center.y * 2, controller.center.z);
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        switch (hit.gameObject.tag)
+        {
+            case "Obstacle":
+                Death();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void Death()
+    {
+        isRunning = false;
+        animator.SetTrigger("Death");
+    }}
