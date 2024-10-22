@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour
 {
+    private bool isRunning = false;
+
     // Movement
     private CharacterController controller;
     private float jumpForce = 4.0f;
@@ -25,8 +27,15 @@ public class PlayerMotor : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    public void StartRunning()
+    {
+        isRunning = true;
+    }
+
     void Update()
     {
+        if (!isRunning) return;
+
         if (MobileInput.Instance.SwipeLeft) MoveLane(false);
         if (MobileInput.Instance.SwipeRight) MoveLane(true);
 
