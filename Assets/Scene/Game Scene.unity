@@ -690,7 +690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &676042186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,6 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f833ebd6177f1a34eb93bb91d5e066f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SHOW_COLLIDER: 0
   ramps:
   - {fileID: 5901970702002870286, guid: ecb57141a9ee5f34ab127a659e8d7add, type: 3}
   - {fileID: 2897523753151666040, guid: e47bb9f8c82c8f24ab0e28699635e133, type: 3}

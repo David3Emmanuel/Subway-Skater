@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
 
-    private const bool SHOW_COLLIDER = true; // NOTE: Set to false when done testing
+    public bool SHOW_COLLIDER = true; // NOTE: Set to false when done testing
 
     // Level Spawning
     private const float DISTANCE_BEFORE_SPAWN = 100.0f;
@@ -44,6 +44,20 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         for (int i = 0; i < INITIAL_SEGMENTS; i++) GenerateSegment();
+    }
+
+    void Update()
+    {
+        if (currentSpawnZ - cameraPosition.position.z < DISTANCE_BEFORE_SPAWN)
+        {
+            GenerateSegment();
+        }
+
+        if (amountOfActiveSegments >= MAX_SEGMENTS_ON_SCREEN)
+        {
+            allSegments[amountOfActiveSegments - 1].DeSpawn();
+            amountOfActiveSegments--;
+        }
     }
 
     void GenerateSegment() {
@@ -87,24 +101,39 @@ public class LevelManager : MonoBehaviour
         segment.Spawn();
     }
 
+    public List<Piece> GetPieces(PieceType type) {
+        List<Piece> pieces = new List<Piece>();
+        switch (type) {
+            case PieceType.RAMP:
+                pieces = ramps;
+                break;
+            case PieceType.LONG_BLOCK:
+                pieces = longBlocks;
+                break;
+            case PieceType.JUMP:
+                pieces = jumps;
+                break;
+            case PieceType.SLIDE:
+                pieces = slides;
+                break;
+        }
+        return pieces;
+    }
+
     public Piece GetPiece(PieceType type, int visualIndex) {
         Piece piece = allPieces.Find(p => p.type == type && p.visualIndex == visualIndex && !p.gameObject.activeSelf);
         if (piece == null) {
-            GameObject pieceObject = null;
-            if (type == PieceType.RAMP) {
-                pieceObject = ramps[visualIndex].gameObject;
-            } else if (type == PieceType.LONG_BLOCK) {
-                pieceObject = longBlocks[visualIndex].gameObject;
-            } else if (type == PieceType.JUMP) {
-                pieceObject = jumps[visualIndex].gameObject;
-            } else if (type == PieceType.SLIDE) {
-                pieceObject = slides[visualIndex].gameObject;
-            }
-
+            GameObject pieceObject = GetPieces(type)[visualIndex].gameObject;
             piece = Instantiate(pieceObject).GetComponent<Piece>();
             allPieces.Add(piece);
         }
         return piece;
+    }
+
+    public Piece GetRandomPiece(PieceType type) {
+        List<Piece> pieces = GetPieces(type);
+        int pieceIndex = Random.Range(0, GetPieces(type).Count);
+        return GetPiece(type, pieceIndex);
     }
 
 public Segment GetSegment(int id, bool isTransition) {

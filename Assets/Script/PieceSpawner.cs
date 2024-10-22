@@ -9,9 +9,10 @@ public class PieceSpawner : MonoBehaviour
 
     public void Spawn()
     {
-        currentPiece = LevelManager.Instance.GetPiece(type, 0);
+        currentPiece = LevelManager.Instance.GetRandomPiece(type);
         currentPiece.gameObject.SetActive(true);
         currentPiece.transform.SetParent(transform);
+        currentPiece.transform.localPosition = Vector3.zero;
     }
 
     public void DeSpawn()

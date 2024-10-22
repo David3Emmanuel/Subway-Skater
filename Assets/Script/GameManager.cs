@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     
     private bool isGameStarted = false;
+    public bool IsDead { get; set; }
     private PlayerMotor player;
 
     // UI
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
             player.StartRunning();
         }
 
-        if (isGameStarted) {
+        if (isGameStarted && !IsDead) {
             lastScore = (int)score;
             score += (Time.deltaTime * modifierScore);
             if ((int)score > lastScore) scoreText.text = score.ToString("0");
