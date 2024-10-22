@@ -12,6 +12,7 @@ public class PlayerMotor : MonoBehaviour
     private float gravity = 12.0f;
     private float verticalVelocity;
     private const float TURN_SPEED = 0.05f;
+    private float slideDuration = 1.0f;
     
     // Speed Modifier
     private float speed;
@@ -75,7 +76,7 @@ public class PlayerMotor : MonoBehaviour
             } else if (MobileInput.Instance.SwipeDown)
             {
                 StartSliding();
-                Invoke("StopSliding", 1.0f);
+                Invoke("StopSliding", slideDuration);
             }
         }
         else
