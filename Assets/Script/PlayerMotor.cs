@@ -23,7 +23,7 @@ public class PlayerMotor : MonoBehaviour
 
     // Lane
     private int desiredLane = 1; // 0 = Left, 1 = Middle, 2 = Right
-    private const float LANE_DISTANCE = 2.0f;
+    private const float LANE_DISTANCE = 2.5f;
 
     // Animator
     private Animator animator;
