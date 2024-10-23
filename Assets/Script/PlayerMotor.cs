@@ -55,19 +55,12 @@ public class PlayerMotor : MonoBehaviour
         if (MobileInput.Instance.SwipeLeft) MoveLane(false);
         if (MobileInput.Instance.SwipeRight) MoveLane(true);
 
-        Vector3 targetPosition = new(0, 0, transform.position.z);
-        if (desiredLane == 0) targetPosition += Vector3.left * LANE_DISTANCE;
-        else if (desiredLane == 2) targetPosition += Vector3.right * LANE_DISTANCE;
-
-        Vector3 moveVector = Vector3.zero;
-        moveVector.x = (targetPosition - transform.position).normalized.x * speed;
-
         bool isGrounded = IsGrounded();
         animator.SetBool("Grounded", isGrounded);
 
         if (isGrounded)
         {
-            verticalVelocity = -0.05f;
+            verticalVelocity = 0;
 
             if (MobileInput.Instance.SwipeUp)
             {
@@ -77,17 +70,21 @@ public class PlayerMotor : MonoBehaviour
             else if (MobileInput.Instance.SwipeDown)
             {
                 StartSliding();
-                Invoke("StopSliding", slideDuration);
+                Invoke(nameof(StopSliding), slideDuration);
             }
         }
         else
         {
             verticalVelocity -= gravity * Time.deltaTime;
-            if (MobileInput.Instance.SwipeDown)
-            {
-                verticalVelocity -= jumpForce;
-            }
+            if (MobileInput.Instance.SwipeDown) verticalVelocity -= jumpForce;
         }
+
+        Vector3 targetPosition = new(0, 0, transform.position.z);
+        if (desiredLane == 0) targetPosition += Vector3.left * LANE_DISTANCE;
+        else if (desiredLane == 2) targetPosition += Vector3.right * LANE_DISTANCE;
+
+        Vector3 moveVector = Vector3.zero;
+        moveVector.x = (targetPosition - transform.position).normalized.x * speed;
         moveVector.y = verticalVelocity;
         moveVector.z = speed;
 
@@ -97,11 +94,6 @@ public class PlayerMotor : MonoBehaviour
         {
             direction.y = 0;
             transform.forward = Vector3.Lerp(transform.forward, direction.normalized, TURN_SPEED);
-            // Snap to direction when close enough
-            if (Vector3.Distance(transform.forward, direction.normalized) < 0.1f)
-            {
-                transform.forward = direction.normalized;
-            }
         }
     }
 
@@ -142,20 +134,11 @@ public class PlayerMotor : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        switch (hit.gameObject.tag)
+        if (hit.gameObject.CompareTag("Obstacle"))
         {
-            case "Obstacle":
-                Death();
-                break;
-            default:
-                break;
+            isRunning = false;
+            animator.SetTrigger("Death");
+            GameManager.Instance.OnDeath();
         }
-    }
-
-    void Death()
-    {
-        isRunning = false;
-        animator.SetTrigger("Death");
-        GameManager.Instance.OnDeath();
     }
 }
