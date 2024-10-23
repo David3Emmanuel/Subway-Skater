@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c46bc999372db4a8994b3e340401dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxCoins: 5
+  chanceToSpawn: 0.5
+  forceSpawnAll: 0
 --- !u!1001 &3649251174172557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1988251450407375423, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2014e6b9ca2a47c4db03f922dccac190, type: 2}
     - target: {fileID: 6345152500987624960, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -123,6 +130,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1988251450407375423, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2014e6b9ca2a47c4db03f922dccac190, type: 2}
     - target: {fileID: 6345152500987624960, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -185,6 +196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1988251450407375423, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2014e6b9ca2a47c4db03f922dccac190, type: 2}
     - target: {fileID: 6345152500987624960, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -247,6 +262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin
       objectReference: {fileID: 0}
+    - target: {fileID: 1988251450407375423, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2014e6b9ca2a47c4db03f922dccac190, type: 2}
     - target: {fileID: 6345152500987624960, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -309,6 +328,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1988251450407375423, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2014e6b9ca2a47c4db03f922dccac190, type: 2}
     - target: {fileID: 6345152500987624960, guid: d28430ca5ac9e9f428ca444754dbce16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
