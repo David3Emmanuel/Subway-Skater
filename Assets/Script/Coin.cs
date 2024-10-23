@@ -6,7 +6,7 @@ public class Coin : MonoBehaviour
 {
     private Animator animator;
 
-void Start(){
+void Awake(){
     animator = GetComponent<Animator>();
 }
 
@@ -16,7 +16,10 @@ void Start(){
         {
             GameManager.Instance.CollectCoin();
             animator.SetTrigger("Collected");
-            Destroy(gameObject, 1.5f);
         }
+    }
+
+    void OnEnable() {
+        animator.SetTrigger("Spawn");
     }
 }

@@ -8,12 +8,12 @@ public class PlayerMotor : MonoBehaviour
 
     // Movement
     private CharacterController controller;
-    private float jumpForce = 4.0f;
+    private float jumpForce = 6.0f;
     private float gravity = 12.0f;
     private float verticalVelocity;
     private const float TURN_SPEED = 0.05f;
     private float slideDuration = 1.0f;
-    
+
     // Speed Modifier
     private float speed;
     private float initialSpeed = 7.0f;
@@ -73,7 +73,8 @@ public class PlayerMotor : MonoBehaviour
             {
                 animator.SetTrigger("Jump");
                 verticalVelocity = jumpForce;
-            } else if (MobileInput.Instance.SwipeDown)
+            }
+            else if (MobileInput.Instance.SwipeDown)
             {
                 StartSliding();
                 Invoke("StopSliding", slideDuration);
@@ -151,4 +152,5 @@ public class PlayerMotor : MonoBehaviour
         isRunning = false;
         animator.SetTrigger("Death");
         GameManager.Instance.IsDead = true;
-    }}
+    }
+}

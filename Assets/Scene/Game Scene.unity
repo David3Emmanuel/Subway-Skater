@@ -731,6 +731,7 @@ MonoBehaviour:
   - {fileID: 6892106922774436639, guid: 0cf5f714eae682f43af6229195a666f0, type: 3}
   - {fileID: 3669665117497325217, guid: 9a43b40abc3cb1a469b10242c744a8fa, type: 3}
   - {fileID: 8987608392452430671, guid: 01df7347008ff644fb68baa63feccb0f, type: 3}
+  - {fileID: 5082509653030531677, guid: 1bef108217f3ce34ba562e6304f6f4ae, type: 3}
   availableTransitions:
   - {fileID: 2451393115817549165, guid: 88097ab9db25cf2418f653302de21ac8, type: 3}
   allSegments: []
