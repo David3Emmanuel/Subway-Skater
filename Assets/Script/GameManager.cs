@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     // UI
     public TextMeshProUGUI scoreText, coinText, modifierText;
-    public Animator gameMenuAnimator;
+    public Animator gameMenuAnimator, menuAnimator, menuDiamondAnimator;
     private float score, coinScore, modifierScore;
     private int lastScore;
 
@@ -52,10 +52,12 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<GlacierSpawner>().IsScrolling = true;
         FindObjectOfType<CameraMotor>().IsMoving = true;
         gameMenuAnimator.SetTrigger("Show");
+        menuAnimator.SetTrigger("Hide");
     }
 
     public void CollectCoin()
     {
+        menuDiamondAnimator.SetTrigger("Collect");
         coinScore++;
         coinText.text = coinScore.ToString("0");
 
