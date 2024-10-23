@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     // UI
     public TextMeshProUGUI scoreText, coinText, modifierText;
+    public Animator gameMenuAnimator;
     private float score, coinScore, modifierScore;
     private int lastScore;
 
@@ -34,12 +35,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (MobileInput.Instance.Tap && !isGameStarted)
-        {
-            isGameStarted = true;
-            player.StartRunning();
-            FindObjectOfType<GlacierSpawner>().IsScrolling = true;
-        }
+        if (MobileInput.Instance.Tap && !isGameStarted) OnStart();
 
         if (isGameStarted && !IsDead)
         {
@@ -47,6 +43,15 @@ public class GameManager : MonoBehaviour
             score += Time.deltaTime * modifierScore;
             if ((int)score > lastScore) scoreText.text = score.ToString("0");
         }
+    }
+
+    void OnStart()
+    {
+        isGameStarted = true;
+        player.StartRunning();
+        FindObjectOfType<GlacierSpawner>().IsScrolling = true;
+        FindObjectOfType<CameraMotor>().IsMoving = true;
+        gameMenuAnimator.SetTrigger("Show");
     }
 
     public void CollectCoin()
