@@ -67,7 +67,7 @@ public class PlayerMotor : MonoBehaviour
 
         if (isGrounded)
         {
-            verticalVelocity = -0.1f;
+            verticalVelocity = -0.05f;
 
             if (MobileInput.Instance.SwipeUp)
             {
