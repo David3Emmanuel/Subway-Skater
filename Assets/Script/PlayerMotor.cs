@@ -97,6 +97,11 @@ public class PlayerMotor : MonoBehaviour
         {
             direction.y = 0;
             transform.forward = Vector3.Lerp(transform.forward, direction.normalized, TURN_SPEED);
+            // Snap to direction when close enough
+            if (Vector3.Distance(transform.forward, direction.normalized) < 0.1f)
+            {
+                transform.forward = direction.normalized;
+            }
         }
     }
 
