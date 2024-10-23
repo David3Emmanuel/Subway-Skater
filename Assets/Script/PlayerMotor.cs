@@ -151,6 +151,6 @@ public class PlayerMotor : MonoBehaviour
     {
         isRunning = false;
         animator.SetTrigger("Death");
-        GameManager.Instance.IsDead = true;
+        GameManager.Instance.OnDeath();
     }
 }
