@@ -4,6 +4,7 @@ Shader "Custom/BendWorld"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Curvature ("Curvature", Float) = 0.001
+        _Color("Color", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -15,6 +16,7 @@ Shader "Custom/BendWorld"
 
             uniform sampler2D _MainTex;
             uniform float _Curvature;
+            fixed4 _Color;
 
             struct Input
             {
@@ -32,7 +34,7 @@ Shader "Custom/BendWorld"
 
             void surf(Input IN, inout SurfaceOutput o)
             {
-                half4 c = tex2D(_MainTex, IN.uv_MainTex);
+                half4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
                 o.Albedo = c.rgb;
                 o.Alpha = c.a;
             }

@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private PlayerMotor player;
 
     // UI
-    public TextMeshProUGUI scoreText, coinText, modifierText;
+    public TextMeshProUGUI scoreText, coinText, modifierText, highScoreText;
     public Animator gameMenuAnimator, menuAnimator, menuDiamondAnimator;
     private float score, coinScore, modifierScore;
     private int lastScore;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString("0");
         coinText.text = coinScore.ToString("0");
         modifierText.text = "x" + modifierScore.ToString("0.0");
+        highScoreText.text = "best: " + PlayerPrefs.GetFloat("High Score", 0).ToString("0");
     }
 
     void Update()
@@ -90,6 +91,12 @@ public class GameManager : MonoBehaviour
         deadScoreText.text = scoreText.text;
         deadCoinText.text = coinText.text;
         deathMenuAnimator.SetTrigger("Dead");
+        gameMenuAnimator.SetTrigger("Hide");
         FindObjectOfType<GlacierSpawner>().IsScrolling = false;
+
+        if (score > PlayerPrefs.GetFloat("High Score", 0))
+        {
+            PlayerPrefs.SetFloat("High Score", score);
+        }
     }
 }
