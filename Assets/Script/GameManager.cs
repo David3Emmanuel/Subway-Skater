@@ -34,6 +34,11 @@ public class GameManager : MonoBehaviour
         highScoreText.text = "best: " + PlayerPrefs.GetFloat("High Score", 0).ToString("0");
     }
 
+    void Start()
+    {
+        AudioManager.Instance.backgroundAudio.Play();
+    }
+
     void Update()
     {
         if (MobileInput.Instance.Tap && !isGameStarted) OnStart();
@@ -54,11 +59,13 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<CameraMotor>().IsMoving = true;
         gameMenuAnimator.SetTrigger("Show");
         menuAnimator.SetTrigger("Hide");
+        AudioManager.Instance.clickAudio.Play();
     }
 
     public void CollectCoin()
     {
         menuDiamondAnimator.SetTrigger("Collect");
+        AudioManager.Instance.coinAudio.Play();
         coinScore++;
         coinText.text = coinScore.ToString("0");
 
@@ -82,6 +89,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPlay()
     {
+        AudioManager.Instance.clickAudio.Play();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game Scene");
     }
 
@@ -93,6 +101,8 @@ public class GameManager : MonoBehaviour
         deathMenuAnimator.SetTrigger("Dead");
         gameMenuAnimator.SetTrigger("Hide");
         FindObjectOfType<GlacierSpawner>().IsScrolling = false;
+        AudioManager.Instance.backgroundAudio.Stop();
+        AudioManager.Instance.deathAudio.Play();
 
         if (score > PlayerPrefs.GetFloat("High Score", 0))
         {

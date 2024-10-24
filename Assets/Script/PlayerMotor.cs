@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class PlayerMotor : MonoBehaviour
     private float jumpForce = 6.0f;
     private float gravity = 12.0f;
     private float verticalVelocity;
-    private const float TURN_SPEED = 0.05f;
     private float slideDuration = 1.0f;
 
     // Speed Modifier
@@ -22,16 +22,21 @@ public class PlayerMotor : MonoBehaviour
     private float speedIncreaseAmount = 0.1f;
 
     // Lane
-    private int desiredLane = 1; // 0 = Left, 1 = Middle, 2 = Right
+    private int desiredLane = 0; // -1 = Left, 0 = Middle, 1 = Right
     private const float LANE_DISTANCE = 2.5f;
 
     // Animator
     private Animator animator;
 
+    // Audio
+    public AudioClip switchLaneSFX, jumpSFX, slideSFX;
+    private AudioSource audioSource;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         speed = initialSpeed;
     }
 
@@ -39,6 +44,12 @@ public class PlayerMotor : MonoBehaviour
     {
         isRunning = true;
         animator.SetTrigger("Start Running");
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     void Update()
@@ -60,15 +71,17 @@ public class PlayerMotor : MonoBehaviour
 
         if (isGrounded)
         {
-            verticalVelocity = 0;
+            verticalVelocity = -0.1f;
 
             if (MobileInput.Instance.SwipeUp)
             {
+                PlaySound(jumpSFX);
                 animator.SetTrigger("Jump");
                 verticalVelocity = jumpForce;
             }
             else if (MobileInput.Instance.SwipeDown)
             {
+                PlaySound(slideSFX);
                 StartSliding();
                 Invoke(nameof(StopSliding), slideDuration);
             }
@@ -79,9 +92,11 @@ public class PlayerMotor : MonoBehaviour
             if (MobileInput.Instance.SwipeDown) verticalVelocity -= jumpForce;
         }
 
-        Vector3 targetPosition = new(0, 0, transform.position.z);
-        if (desiredLane == 0) targetPosition += Vector3.left * LANE_DISTANCE;
-        else if (desiredLane == 2) targetPosition += Vector3.right * LANE_DISTANCE;
+        Vector3 targetPosition = new(LANE_DISTANCE * desiredLane, 0f, transform.position.z);
+        if (Math.Abs(transform.position.x - targetPosition.x) < 0.1f)
+        {
+            transform.position = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
+        }
 
         Vector3 moveVector = Vector3.zero;
         moveVector.x = (targetPosition - transform.position).normalized.x * speed;
@@ -92,15 +107,17 @@ public class PlayerMotor : MonoBehaviour
         Vector3 direction = controller.velocity;
         if (direction != Vector3.zero)
         {
-            direction.y = 0;
-            transform.forward = Vector3.Lerp(transform.forward, direction.normalized, TURN_SPEED);
+            direction.y = 0f;
+            transform.forward = Vector3.Lerp(transform.forward, direction.normalized, Time.deltaTime);
         }
     }
 
     void MoveLane(bool isGoingRight)
     {
         desiredLane += isGoingRight ? 1 : -1;
-        desiredLane = Mathf.Clamp(desiredLane, 0, 2);
+        if (desiredLane < -1) desiredLane = -1;
+        else if (desiredLane > 1) desiredLane = 1;
+        else PlaySound(switchLaneSFX);
     }
 
     bool IsGrounded()
@@ -121,15 +138,16 @@ public class PlayerMotor : MonoBehaviour
     void StartSliding()
     {
         animator.SetBool("Sliding", true);
-        controller.height /= 2;
+        controller.height /= 2f;
         controller.center = new Vector3(controller.center.x, controller.center.y / 2, controller.center.z);
     }
 
     void StopSliding()
     {
         animator.SetBool("Sliding", false);
-        controller.height *= 2;
+        controller.height *= 2f;
         controller.center = new Vector3(controller.center.x, controller.center.y * 2, controller.center.z);
+        if (audioSource.isPlaying && audioSource.clip == slideSFX) audioSource.Stop();
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
